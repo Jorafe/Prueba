@@ -15,6 +15,8 @@ public class PlayerControler : MonoBehaviour
 
     [SerializeField] private int healthPoints = 5;
 
+    private bool isAttacking;
+
     void Awake()
     {
         characterRigidbody = GetComponent<Rigidbody2D>();
@@ -29,34 +31,17 @@ public class PlayerControler : MonoBehaviour
 
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        
-        if(horizontalInput < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-            characterAnimator.SetBool("IsRunning", true);
-          
-        }
-       
-        else if(horizontalInput > 0)
-        {
-           transform.rotation = Quaternion.Euler(0, 0, 0);
-           characterAnimator.SetBool("IsRunning", true); 
-           
-        }
-        else 
-        {
-            characterAnimator.SetBool("IsRunning", false);
-            
-        }
-        
+        Movimiento();
 
-        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded == true)
+        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttacking)
         {
-            characterRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            characterAnimator.SetBool("IsJumping", true);
+            Jump();
         }
 
+         if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded & !isAttacking)
+        {
+            Attack();
+        }
         
     }
 
@@ -67,24 +52,94 @@ public class PlayerControler : MonoBehaviour
 
     }
 
+    void Movimiento()
+    {
+         horizontalInput = Input.GetAxis("Horizontal");
+
+         if(horizontalInput == 0)
+         {
+            characterAnimator.SetBool("IsRunning", false);
+         }
+
+         if(isAttacking)
+         {
+            return;
+         }
+         else if(horizontalInput < 0)
+         {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            characterAnimator.SetBool("IsRunning", true); 
+         }
+          else if(horizontalInput > 0)
+         {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            characterAnimator.SetBool("IsRunning", true); 
+         }
+        
+       /* if(horizontalInput < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0); 
+        }
+        characterAnimator.SetBool("IsRunning", true);
+
+        else if(horizontalInput > 0)
+        {
+           transform.rotation = Quaternion.Euler(0, 0, 0);
+           characterAnimator.SetBool("IsRunning", true); 
+           
+        }
+        else 
+        {
+            characterAnimator.SetBool("IsRunning", false);
+            
+        }*/
+        
+    }
+
+    void Jump()
+    {
+        characterRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        characterAnimator.SetBool("IsJumping", true);
+    }
+
+    void Attack()
+    {
+        StartCoroutine(AttackAnimation());
+        characterAnimator.SetTrigger("Attack");
+       
+    }
+
+    IEnumerator AttackAnimation()
+    {
+        isAttacking = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        isAttacking = false;
+    }
+
     void TakeDamage()
     {
         healthPoints--;
-        characterAnimator.SetTrigger("IsHurt");
-       
-        if(healthPoints == 0)
+
+        if(healthPoints <= 0)
         {
           Die();
         }
+        else
+        {
+            characterAnimator.SetTrigger("IsHurt");
+        }
+        
     }
 
     void Die()
     {
-        characterAnimator.SetBool("IsDead", true);
-        Destroy(gameObject, 0.40f);
+        characterAnimator.SetTrigger("IsDead");
+        Destroy(gameObject, 1f);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
        
         if(collision.gameObject.layer == 8)

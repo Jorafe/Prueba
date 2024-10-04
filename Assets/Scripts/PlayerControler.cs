@@ -17,6 +17,10 @@ public class PlayerControler : MonoBehaviour
 
     private bool isAttacking;
 
+    [SerializeField] private Transform attackHitBox;
+    [SerializeField] private float attackRadius;
+    
+
     void Awake()
     {
         characterRigidbody = GetComponent<Rigidbody2D>();
@@ -106,14 +110,27 @@ public class PlayerControler : MonoBehaviour
     {
         StartCoroutine(AttackAnimation());
         characterAnimator.SetTrigger("Attack");
-       
     }
 
     IEnumerator AttackAnimation()
     {
         isAttacking = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
+
+        Collider2D[] collider = Physics2D.OverlapCircleAll(attackHitBox.position, attackRadius);
+        foreach(Collider2D enemy in collider)
+        {
+            if(enemy.gameObject.CompareTag ("Mimico"))
+            {
+                enemy.GetComponent<Mimico>().TakeDamage();
+                //Destroy(enemy.gameObject);
+                Rigidbody2D enemyRigidBody = enemy.GetComponent<Rigidbody2D>();
+                enemyRigidBody.AddForce(transform.right + transform.up * 2, ForceMode2D.Impulse);
+            }
+        }
+
+        yield return new WaitForSeconds(0.4f);
 
         isAttacking = false;
     }
@@ -146,5 +163,10 @@ public class PlayerControler : MonoBehaviour
         {
             TakeDamage();
         }
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackHitBox.position, attackRadius);
     }
 }

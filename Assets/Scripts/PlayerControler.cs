@@ -58,6 +58,11 @@ public class PlayerControler : MonoBehaviour
 
     void Movimiento()
     {
+        if(horizontalInput == 0 && isAttacking)
+         {
+            horizontalInput = 0;
+            return;
+         }
          horizontalInput = Input.GetAxis("Horizontal");
 
          if(horizontalInput == 0)
@@ -65,10 +70,7 @@ public class PlayerControler : MonoBehaviour
             characterAnimator.SetBool("IsRunning", false);
          }
 
-         if(isAttacking)
-         {
-            return;
-         }
+         
          else if(horizontalInput < 0)
          {
             transform.rotation = Quaternion.Euler(0, 180, 0);

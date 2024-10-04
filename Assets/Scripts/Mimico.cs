@@ -29,42 +29,9 @@ public class Mimico : MonoBehaviour
             TakeDamage();
         }
 
-        if (collision.gameObject.tag == "Player")
-        {
-            playerInRange = true;
-        }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            playerInRange = false;
-        }
-    }
 
-    private void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            GetComponent<Animator>().SetTrigger("Attack");
-
-            Destroy(GameObject.FindGameObjectWithTag("Player"));
-            
-        }
-    }
-
-    IEnumerator MimicReaction()
-    {
-        GetComponent<Animator>().SetTrigger("Attack");
-
-        yield return new WaitForSeconds(0.18f);
-
-        Destroy(GameObject.FindGameObjectWithTag("Player"));
-
-        
-    }
-    
 
 public void TakeDamage()
     {

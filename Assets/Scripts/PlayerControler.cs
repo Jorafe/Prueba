@@ -61,9 +61,13 @@ public class PlayerControler : MonoBehaviour
         if(horizontalInput == 0 && isAttacking)
          {
             horizontalInput = 0;
-            return;
+          
          }
-         horizontalInput = Input.GetAxis("Horizontal");
+         else
+         {
+            horizontalInput = Input.GetAxis("Horizontal");
+         }
+         
 
          if(horizontalInput == 0)
          {

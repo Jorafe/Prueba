@@ -40,13 +40,17 @@ public class PlayerControler : MonoBehaviour
         if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttacking)
         {
             Jump();
+        
         }
 
          if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded & !isAttacking)
         {
             Attack();
         }
-        
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.instance.Pause();
+        }
     }
 
     // Update is called once per frame
@@ -85,6 +89,8 @@ public class PlayerControler : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
             characterAnimator.SetBool("IsRunning", true); 
          }
+
+         
         
        /* if(horizontalInput < 0)
         {
@@ -110,12 +116,14 @@ public class PlayerControler : MonoBehaviour
     {
         characterRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         characterAnimator.SetBool("IsJumping", true);
+        SoundManager.instance.PlaySFX(SoundManager.instance._jumpAudio);
     }
 
     void Attack()
     {
         StartCoroutine(AttackAnimation());
         characterAnimator.SetTrigger("Attack");
+        SoundManager.instance.PlaySFX(SoundManager.instance._AtackAudio);
     }
 
     IEnumerator AttackAnimation()
@@ -141,9 +149,9 @@ public class PlayerControler : MonoBehaviour
         isAttacking = false;
     }
 
-    void TakeDamage()
+    void TakeDamage(int damage)
     {
-        healthPoints--;
+        healthPoints -= damage;
 
         if(healthPoints <= 0)
         {
@@ -153,6 +161,8 @@ public class PlayerControler : MonoBehaviour
         {
             characterAnimator.SetTrigger("IsHurt");
         }
+
+       SoundManager.instance.PlaySFX(SoundManager.instance._HurtAudio); 
         
     }
 
@@ -160,6 +170,7 @@ public class PlayerControler : MonoBehaviour
     {
         characterAnimator.SetTrigger("IsDead");
         Destroy(gameObject, 1f);
+        SoundManager.instance.PlaySFX(SoundManager.instance._DieAudio);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -167,7 +178,7 @@ public class PlayerControler : MonoBehaviour
        
         if(collision.gameObject.layer == 8)
         {
-            TakeDamage();
+            TakeDamage(1);
         }
     }
     void OnDrawGizmos()

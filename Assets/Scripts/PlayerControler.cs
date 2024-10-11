@@ -17,6 +17,8 @@ public class PlayerControler : MonoBehaviour
 
     private bool isAttacking;
 
+    private AudioSource _audioSource;
+
     [SerializeField] private Transform attackHitBox;
     [SerializeField] private float attackRadius;
     
@@ -25,12 +27,14 @@ public class PlayerControler : MonoBehaviour
     {
         characterRigidbody = GetComponent<Rigidbody2D>();
         characterAnimator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         //characterRigidbody.AddForce(Vector2.up * jumpForce);
+        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
     }
 
     void Update()
@@ -116,14 +120,14 @@ public class PlayerControler : MonoBehaviour
     {
         characterRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         characterAnimator.SetBool("IsJumping", true);
-        SoundManager.instance.PlaySFX(SoundManager.instance._jumpAudio);
+        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._jumpAudio);
     }
 
     void Attack()
     {
         StartCoroutine(AttackAnimation());
         characterAnimator.SetTrigger("Attack");
-        SoundManager.instance.PlaySFX(SoundManager.instance._AtackAudio);
+        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._AtackAudio);
     }
 
     IEnumerator AttackAnimation()
@@ -162,7 +166,7 @@ public class PlayerControler : MonoBehaviour
             characterAnimator.SetTrigger("IsHurt");
         }
 
-       SoundManager.instance.PlaySFX(SoundManager.instance._HurtAudio); 
+       SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
         
     }
 
@@ -170,7 +174,7 @@ public class PlayerControler : MonoBehaviour
     {
         characterAnimator.SetTrigger("IsDead");
         Destroy(gameObject, 1f);
-        SoundManager.instance.PlaySFX(SoundManager.instance._DieAudio);
+        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._DieAudio);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

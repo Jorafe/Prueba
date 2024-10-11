@@ -19,7 +19,7 @@ public class Star : MonoBehaviour
         {
             GameManager.instance.AddStars();
 
-            SoundManager.instance.PlaySFX(SoundManager.instance._starAudio);
+            SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._starAudio);
 
             Destroy(gameObject);
         }        

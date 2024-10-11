@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
             isPaused = false;
         }
 
-        SoundManager.instance.PlaySFX(SoundManager.instance._StopAudio);
+        SoundManager.instance.PlaySFX(SoundManager.instance._audioSource, SoundManager.instance._StopAudio);
     }
 
 

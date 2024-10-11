@@ -19,6 +19,12 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip _starAudio;
 
+    public AudioClip _MimicoHurtAudio;
+
+    public AudioClip _MimicoDieAudio;
+
+    public AudioClip _MimicoAudio;
+
     
 
 
@@ -41,11 +47,12 @@ public class SoundManager : MonoBehaviour
         _audioSource.PlayOneShot(_starAudio);
     }*/
 
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(AudioSource source,AudioClip clip)
     {
-        _audioSource.PlayOneShot(clip);
+        source.PlayOneShot(clip);
     }
 
+   
    
     
 }

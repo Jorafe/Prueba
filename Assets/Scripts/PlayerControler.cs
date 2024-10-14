@@ -162,16 +162,17 @@ public class PlayerControler : MonoBehaviour
     void Attack()
     {
         Debug.Log("Atake");
-        Collider[] collider = Physics.OverlapSphere(attackHitBox.position, attackRadius);
-        foreach(Collider enemy in collider)
+        Collider2D[] collider = Physics2D.OverlapCircleAll(attackHitBox.position, attackRadius);
+        foreach(Collider2D Enemy in collider)
         {
-            if(enemy.gameObject.tag == "Mimico")
+            if(Enemy.gameObject.tag == "Mimico")
             {
                 Debug.Log("enemigo detectado");
-                enemy.GetComponent<Mimico>().TakeDamage();
+                Enemy.GetComponent<Mimico>().TakeDamage();
                 //Destroy(enemy.gameObject);
-                Rigidbody2D enemyRigidBody = enemy.GetComponent<Rigidbody2D>();
+                Rigidbody2D enemyRigidBody = Enemy.GetComponent<Rigidbody2D>();
                 enemyRigidBody.AddForce(transform.right + transform.up * 2, ForceMode2D.Impulse);
+                Mimico mimico = Enemy.GetComponent<Mimico>();
 
             }
         }

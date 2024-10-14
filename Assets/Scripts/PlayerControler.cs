@@ -34,7 +34,7 @@ public class PlayerControler : MonoBehaviour
     void Start()
     {
         //characterRigidbody.AddForce(Vector2.up * jumpForce);
-        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
+        //SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
     }
 
     void Update()
@@ -49,7 +49,8 @@ public class PlayerControler : MonoBehaviour
 
          if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded & !isAttacking)
         {
-            Attack();
+            StartAttack();
+            
         }
         if(Input.GetKeyDown(KeyCode.P))
         {
@@ -123,7 +124,7 @@ public class PlayerControler : MonoBehaviour
         SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._jumpAudio);
     }
 
-    void Attack()
+    /*void Attack()
     {
         StartCoroutine(AttackAnimation());
         characterAnimator.SetTrigger("Attack");
@@ -150,6 +151,34 @@ public class PlayerControler : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
+        isAttacking = false;
+    }*/
+
+    void StartAttack()
+    {
+        isAttacking = true;
+        characterAnimator.SetTrigger("Attack");
+    }
+    void Attack()
+    {
+        Debug.Log("Atake");
+        Collider[] collider = Physics.OverlapSphere(attackHitBox.position, attackRadius);
+        foreach(Collider enemy in collider)
+        {
+            if(enemy.gameObject.tag == "Mimico")
+            {
+                Debug.Log("enemigo detectado");
+                enemy.GetComponent<Mimico>().TakeDamage();
+                //Destroy(enemy.gameObject);
+                Rigidbody2D enemyRigidBody = enemy.GetComponent<Rigidbody2D>();
+                enemyRigidBody.AddForce(transform.right + transform.up * 2, ForceMode2D.Impulse);
+
+            }
+        }
+    }
+
+    void EndAttack()
+    {
         isAttacking = false;
     }
 

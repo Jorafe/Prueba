@@ -28,7 +28,7 @@ public class SoundManager : MonoBehaviour
     
 
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null && instance != this)
         {
@@ -42,10 +42,10 @@ public class SoundManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    /*public void StarSFX()
+    public void StarSFX(AudioSource source, AudioClip clip)
     {
-        _audioSource.PlayOneShot(_starAudio);
-    }*/
+        source.PlayOneShot(clip);
+    }
 
     public void PlaySFX(AudioSource source,AudioClip clip)
     {

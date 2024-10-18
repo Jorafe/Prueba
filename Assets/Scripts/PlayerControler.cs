@@ -157,12 +157,14 @@ public class PlayerControler : MonoBehaviour
     void StartAttack()
     {
         isAttacking = true;
+        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._AtackAudio);
         characterAnimator.SetTrigger("Attack");
     }
     void Attack()
     {
-        Debug.Log("Atake");
+        Debug.Log("Atake iniciado");
         Collider2D[] collider = Physics2D.OverlapCircleAll(attackHitBox.position, attackRadius);
+        EndAttack();
         foreach(Collider2D Enemy in collider)
         {
             if(Enemy.gameObject.tag == "Mimico")
@@ -203,8 +205,8 @@ public class PlayerControler : MonoBehaviour
     void Die()
     {
         characterAnimator.SetTrigger("IsDead");
-        Destroy(gameObject, 1f);
         SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._DieAudio);
+        Destroy(gameObject, 1f);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

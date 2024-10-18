@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Text _coinsText;
 
+    private Animator _pauseMenuAnim;
+
     private bool isPaused;
 
     [SerializeField] private GameObject _pauseMenu;
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
+        _pauseMenuAnim = _pauseMenu.GetComponentInChildren<Animator>();
     }
 
     public void Pause()
@@ -40,12 +44,25 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Time.timeScale = 1;
-            isPaused = false;
-            _pauseMenu.SetActive(false);
+            StartCoroutine(ClosePauseAnimation());
         }
+        
+        
+           
 
         SoundManager.instance.PlaySFX(SoundManager.instance._audioSource, SoundManager.instance._StopAudio);
+    }
+
+    IEnumerator ClosePauseAnimation()
+    {
+        _pauseMenuAnim.SetBool("Close", true);
+
+        yield return new WaitForSecondsRealtime(0.30f);
+
+        Time.timeScale = 1;
+        isPaused = false;
+        _pauseMenu.SetActive(false);
+        
     }
 
 

@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     private bool isPaused;
 
+    public HUD hud;
+
     private bool pauseAnimation;
 
     [SerializeField] private GameObject _pauseMenu;
@@ -72,11 +74,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void AddStars()
+    /*public void AddStars()
     {
         stars++;
         _starsText.text = stars.ToString();
-    }
+        
+    }*/
 
      public void AddCoins()
     {

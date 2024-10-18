@@ -14,8 +14,8 @@ public class PlayerControler : MonoBehaviour
 
     [SerializeField] private float jumpForce = 100f;
 
-    [SerializeField] private int maxHealthPoints = 5;
-    [SerializeField] private int currentHealthPoints;
+    [SerializeField] public int maxHealthPoints = 5;
+    [SerializeField] public int currentHealthPoints;
 
 
 

@@ -12,10 +12,13 @@ public class HelthHearts : MonoBehaviour
         if(collider.gameObject.tag == "Player")
         {
             playerControler = collider.gameObject.GetComponent<PlayerControler>();
-            playerControler.PlusHealth(health);
-            Destroy(gameObject);
 
-           
+            //if(playerControler._currentHealthPoints + health > playerControler._maxHealthPoints)
+            {
+                playerControler.PlusHealth(health);
+                Destroy(gameObject); 
+            }
+            
         }
     }
 }

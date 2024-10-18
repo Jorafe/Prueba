@@ -17,14 +17,14 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void ActivarMoneda(int indice)
+    public void ActivarEstrellas(int indice)
     {
-        Debug.Log("Activando moneda en índice: " + indice);
 
         if (indice >= 0 && indice < estrellas.Length)
         {
             estrellas[indice].SetActive(true);
         }
+
     }
 
 }

@@ -30,7 +30,7 @@ public class Star : MonoBehaviour
             
             Destroy(gameObject);
             
-            HUD.instance.ActivarMoneda(1);
+            HUD.instance.ActivarEstrellas(1);
 
             SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._starAudio);
  
@@ -64,7 +64,7 @@ public class Star : MonoBehaviour
         }
         else
         {
-            hud.ActivarMoneda(estrellas);
+            hud.ActivarEstrellas(estrellas);
             estrellas += 1;
         }
         

@@ -60,6 +60,10 @@ public class PlayerControler : MonoBehaviour
             StartAttack();
             
         }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.instance.Pause();
+        }
        
     }
 

@@ -7,13 +7,17 @@ public class PlayerControler : MonoBehaviour
     private Rigidbody2D characterRigidbody;
     private float horizontalInput;
 
+
     public static Animator characterAnimator;
     
     [SerializeField]private float characterSpeed = 4.5f;
 
     [SerializeField] private float jumpForce = 100f;
 
-    [SerializeField] private int healthPoints = 5;
+    [SerializeField] private int maxHealthPoints = 5;
+    [SerializeField] private int currentHealthPoints;
+
+
 
     private bool isAttacking;
 
@@ -35,6 +39,10 @@ public class PlayerControler : MonoBehaviour
     {
         //characterRigidbody.AddForce(Vector2.up * jumpForce);
         //SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
+
+        currentHealthPoints = maxHealthPoints;
+
+        GameManager.instance.SetHealthSlider(maxHealthPoints);
     }
 
     void Update()
@@ -52,10 +60,7 @@ public class PlayerControler : MonoBehaviour
             StartAttack();
             
         }
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            GameManager.instance.Pause();
-        }
+       
     }
 
     // Update is called once per frame
@@ -187,9 +192,11 @@ public class PlayerControler : MonoBehaviour
 
     void TakeDamage(int damage)
     {
-        healthPoints -= damage;
+        currentHealthPoints -= damage;
 
-        if(healthPoints <= 0)
+        GameManager.instance.UpdateHealthSlider(currentHealthPoints);
+
+        if(currentHealthPoints <= 0)
         {
           Die();
         }
@@ -200,6 +207,13 @@ public class PlayerControler : MonoBehaviour
 
        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._HurtAudio);
         
+    }
+
+    public void PlusHealth(int health)
+    {
+        currentHealthPoints += health;
+
+        GameManager.instance.UpdateHealthSlider(currentHealthPoints);
     }
 
     void Die()

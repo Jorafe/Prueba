@@ -18,7 +18,11 @@ public class GameManager : MonoBehaviour
 
     private bool isPaused;
 
+    private bool pauseAnimation;
+
     [SerializeField] private GameObject _pauseMenu;
+
+    [SerializeField] private Slider _healthslider;   
 
     void Awake()
     {
@@ -36,21 +40,21 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        if (!isPaused)
-        {
-            Time.timeScale = 0;
+        
+        if (!isPaused && !pauseAnimation)
+        {   
             isPaused = true;
+            Time.timeScale = 0;
             _pauseMenu.SetActive(true);
         }
-        else
+        else if(isPaused && !pauseAnimation) 
         {
-            StartCoroutine(ClosePauseAnimation());
-        }
-        
-        
-           
+            pauseAnimation = true;
 
-        SoundManager.instance.PlaySFX(SoundManager.instance._audioSource, SoundManager.instance._StopAudio);
+            StartCoroutine(ClosePauseAnimation());
+        }     
+
+        
     }
 
     IEnumerator ClosePauseAnimation()
@@ -62,6 +66,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         isPaused = false;
         _pauseMenu.SetActive(false);
+
+        pauseAnimation = false;
         
     }
 
@@ -77,5 +83,17 @@ public class GameManager : MonoBehaviour
         coins++;
         _coinsText.text = coins.ToString();
     }
+
+    public void SetHealthSlider(int maxHealth)
+    {
+        _healthslider.maxValue = maxHealth;
+        _healthslider.value = maxHealth;
+    }
+
+    public void UpdateHealthSlider(int health)
+    {
+        _healthslider.value = health;
+    }
+
    
 }

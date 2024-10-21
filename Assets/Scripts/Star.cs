@@ -6,34 +6,18 @@ using UnityEngine.UI;
 public class Star : MonoBehaviour
 {
     private bool interactable;
-    private BoxCollider2D boxCollider;
-
-    public static GameManager Instance { get; private set; }
-
-    public HUD hud;
-
-    public GameManager _gameManager;
-
-   public int estrellas;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.E) && interactable)
         {
-            
-            Destroy(gameObject);
-            
-            HUD.instance.ActivarEstrellas(1);
 
             SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._starAudio);
- 
+            
+            GameManager.instance.AddStars();
+
+            Destroy(gameObject);
         }        
     }
 
@@ -41,10 +25,7 @@ public class Star : MonoBehaviour
     {
         if(collider.gameObject.tag == "Player")
         {
-            hud = hud.GetComponent<HUD>();
             interactable = true;
-            //_gameManager.AddStars();  
-            
         }
     }
 
@@ -55,18 +36,4 @@ public class Star : MonoBehaviour
             interactable = false;
         }
     }
-
-     public void ConseguirEstrellas()
-   {
-        if (estrellas == 3)
-        {
-            return;
-        }
-        else
-        {
-            hud.ActivarEstrellas(estrellas);
-            estrellas += 1;
-        }
-        
-   }
 }

@@ -9,6 +9,18 @@ public class HUD : MonoBehaviour
 
     public static HUD instance;
 
+    void Awake()
+    {
+         if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
     void Start()
     {
         foreach (GameObject moneda in estrellas)

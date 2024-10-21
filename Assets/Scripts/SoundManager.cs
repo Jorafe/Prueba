@@ -15,6 +15,14 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip _DieAudio;
 
+    public AudioClip _MenuDieAudio;
+
+    public AudioClip _VictoryAudio;
+
+    public AudioClip _MenuAudio;
+
+    public AudioClip _CoinAudio;
+
     public AudioClip _StopAudio;
 
     public AudioClip _starAudio;
@@ -38,6 +46,8 @@ public class SoundManager : MonoBehaviour
         {
             instance = this;
         }
+
+        DontDestroyOnLoad(gameObject);
 
         _audioSource = GetComponent<AudioSource>();
     }

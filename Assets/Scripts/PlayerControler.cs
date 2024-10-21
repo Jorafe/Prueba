@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -64,7 +65,9 @@ public class PlayerControler : MonoBehaviour
         {
             GameManager.instance.Pause();
         }
-       
+
+        
+
     }
 
     // Update is called once per frame
@@ -223,8 +226,12 @@ public class PlayerControler : MonoBehaviour
     void Die()
     {
         characterAnimator.SetTrigger("IsDead");
-        SoundManager.instance.PlaySFX(_audioSource,SoundManager.instance._DieAudio);
-        Destroy(gameObject, 1f);
+        SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._DieAudio);
+        Destroy(gameObject, 100f);
+        
+        SceneManager.LoadScene("Game Over");
+        SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._MenuDieAudio);
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using JetBrains.Annotations;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,9 +20,13 @@ public class GameManager : MonoBehaviour
 
     private bool isPaused;
 
+    private bool isVictory;
+
     private bool pauseAnimation;
 
     [SerializeField] private GameObject _pauseMenu;
+
+    [SerializeField] private GameObject _victoryMenu;
 
     [SerializeField] private Slider _healthslider;   
 
@@ -53,10 +58,36 @@ public class GameManager : MonoBehaviour
             pauseAnimation = true;
 
             StartCoroutine(ClosePauseAnimation());
-        }     
+        } 
+    }  
 
+    
+      
+
+    public void Victory()
+    {
         
-    }
+        if (!isVictory && !pauseAnimation)
+        {   
+            isVictory = true;
+            Time.timeScale = 0;
+            _victoryMenu.SetActive(true);
+            SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._VictoryAudio);
+
+        }
+        
+    }    
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                StartCoroutine(LoadAsync("Main Menu"));
+            }
+            
+        }
+
+    
 
     IEnumerator ClosePauseAnimation()
     {
@@ -77,6 +108,10 @@ public class GameManager : MonoBehaviour
     {
         HUD.instance.ActivarEstrellas(stars);
         stars += 1;
+        if(stars >= 3)
+            {
+                GameManager.instance.Victory();  
+            }
     }
 
      public void AddCoins()
@@ -99,7 +134,17 @@ public class GameManager : MonoBehaviour
     public void SceneLoad(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-       
+         Time.timeScale = 1;
+    }
+
+    IEnumerator LoadAsync(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 
     

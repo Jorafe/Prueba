@@ -27,8 +27,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _pauseMenu;
 
     [SerializeField] private GameObject _victoryMenu;
+    
+    [SerializeField] private GameObject _optionsMenu;
 
     [SerializeField] private Slider _healthslider;   
+
+    
 
     void Awake()
     {

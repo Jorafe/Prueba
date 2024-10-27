@@ -5,7 +5,7 @@ using UnityEngine;
 public class coin : MonoBehaviour
 {
 
-    public AudioSource source;
+    private AudioSource _audioSource;
 
     private bool interactable;
 
@@ -18,6 +18,7 @@ public class coin : MonoBehaviour
        
         if(collider.gameObject.tag == "Player")
         {  
+          SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._CoinAudio);
           Destroy(gameObject);
           GameManager.instance.AddCoins();
         }

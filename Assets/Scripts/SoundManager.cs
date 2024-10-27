@@ -19,6 +19,8 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip _VictoryAudio;
 
+    public AudioClip _HealthAudio;
+
     public AudioClip _MenuAudio;
 
     public AudioClip _CoinAudio;

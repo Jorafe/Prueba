@@ -223,7 +223,7 @@ public class PlayerControler : MonoBehaviour
         GameManager.instance.UpdateHealthSlider(currentHealthPoints);
     }
 
-    void Die()
+    public void Die()
     {
         characterAnimator.SetTrigger("IsDead");
         SoundManager.instance.PlaySFX(SoundManager.instance._audioSource,SoundManager.instance._DieAudio);
